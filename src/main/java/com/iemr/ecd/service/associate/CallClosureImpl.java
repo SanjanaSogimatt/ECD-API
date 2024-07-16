@@ -199,10 +199,10 @@ public class CallClosureImpl {
 			if (request.getIsStickyAgentRequired() != null && request.getIsStickyAgentRequired()) {
 				if (request.getChildId() != null)
 					outboundCallsRepo.stickyChildAgentAllocation(request.getObCallId(), request.getChildId(),
-							request.getUserId());
+							request.getUserId(), request.getIsStickyAgentRequired());
 				else
 					outboundCallsRepo.stickyMotherAgentAllocation(request.getObCallId(), request.getMotherId(),
-							request.getUserId());
+							request.getUserId(), request.getIsStickyAgentRequired());
 			}
 
 			Map<String, Object> responseMap = new HashMap<>();

@@ -575,14 +575,27 @@ public class CallAllocationImpl {
 				Page<OutboundCalls> outboundCallsPage = null;
 
 				if (callAllocationDto.getRecordType().equalsIgnoreCase("Mother")) {
-
-					outboundCallsPage = outboundCallsRepo.getAllocatedRecordsUserByRecordTypeAndPhoneTypeMother(
-							pageable, callAllocationDto.getUserId(), "open", callAllocationDto.getPhoneNoType(),
-							tempFDateStamp, tempTDateStamp);
+					if(null!= callAllocationDto.getIsStickyAgent() && callAllocationDto.getIsStickyAgent()) {
+						outboundCallsPage = outboundCallsRepo.getAllocatedRecordsUserByRecordTypeAndPhoneTypeMotherByIsStickyAgent(
+								pageable, callAllocationDto.getUserId(), "open", callAllocationDto.getPhoneNoType(),
+								tempFDateStamp, tempTDateStamp, callAllocationDto.getIsStickyAgent());
+					}else {
+						outboundCallsPage = outboundCallsRepo.getAllocatedRecordsUserByRecordTypeAndPhoneTypeMother(
+								pageable, callAllocationDto.getUserId(), "open", callAllocationDto.getPhoneNoType(),
+								tempFDateStamp, tempTDateStamp);
+					}
+					
 				} else if (callAllocationDto.getRecordType().equalsIgnoreCase("Child")) {
-					outboundCallsPage = outboundCallsRepo.getAllocatedRecordsUserByRecordTypeAndPhoneTypeChild(pageable,
-							callAllocationDto.getUserId(), "open", callAllocationDto.getPhoneNoType(), tempFDateStamp,
-							tempTDateStamp);
+					if(null!= callAllocationDto.getIsStickyAgent() && callAllocationDto.getIsStickyAgent()) {
+						outboundCallsPage = outboundCallsRepo.getAllocatedRecordsUserByRecordTypeAndPhoneTypeChildByIsStickyAgent(pageable,
+								callAllocationDto.getUserId(), "open", callAllocationDto.getPhoneNoType(), tempFDateStamp,
+								tempTDateStamp, callAllocationDto.getIsStickyAgent());
+					}else {
+						outboundCallsPage = outboundCallsRepo.getAllocatedRecordsUserByRecordTypeAndPhoneTypeChild(pageable,
+								callAllocationDto.getUserId(), "open", callAllocationDto.getPhoneNoType(), tempFDateStamp,
+								tempTDateStamp);
+					}
+					
 				}
 
 				List<Long> motherIds = new ArrayList<>();
@@ -647,11 +660,21 @@ public class CallAllocationImpl {
 				int cnt = 0;
 
 				if (callAllocationDto.getRecordType().equalsIgnoreCase("Mother")) {
-					cnt = outboundCallsRepo.getAllocatedRecordsCountMotherUser(callAllocationDto.getUserId(),
-							tempFDateStamp, tempTDateStamp, "open", callAllocationDto.getPhoneNoType());
+					if(null!= callAllocationDto.getIsStickyAgent() && callAllocationDto.getIsStickyAgent()) {
+						cnt = outboundCallsRepo.getAllocatedRecordsCountMotherUserByStickyAgent(callAllocationDto.getUserId(),
+								tempFDateStamp, tempTDateStamp, "open", callAllocationDto.getPhoneNoType(), callAllocationDto.getIsStickyAgent());
+					}else {
+						cnt = outboundCallsRepo.getAllocatedRecordsCountMotherUser(callAllocationDto.getUserId(),
+								tempFDateStamp, tempTDateStamp, "open", callAllocationDto.getPhoneNoType());
+					}
 				} else if (callAllocationDto.getRecordType().equalsIgnoreCase("Child")) {
-					cnt = outboundCallsRepo.getAllocatedRecordsCountChildUser(callAllocationDto.getUserId(),
-							tempFDateStamp, tempTDateStamp, "open", callAllocationDto.getPhoneNoType());
+					if(null!= callAllocationDto.getIsStickyAgent() && callAllocationDto.getIsStickyAgent()) {
+						cnt = outboundCallsRepo.getAllocatedRecordsCountChildUserByIsStickyAgent(callAllocationDto.getUserId(),
+								tempFDateStamp, tempTDateStamp, "open", callAllocationDto.getPhoneNoType(), callAllocationDto.getIsStickyAgent());
+					}else {
+						cnt = outboundCallsRepo.getAllocatedRecordsCountChildUser(callAllocationDto.getUserId(),
+								tempFDateStamp, tempTDateStamp, "open", callAllocationDto.getPhoneNoType());
+					}
 				} else
 					throw new InvalidRequestException("Invalid recordType",
 							"please pass valid recordType - Mother / Child");
@@ -698,14 +721,27 @@ public class CallAllocationImpl {
 				Page<OutboundCalls> outboundCallsPage = null;
 
 				if (callAllocationDto.getRecordType().equalsIgnoreCase("Mother")) {
-
-					outboundCallsPage = outboundCallsRepo.getAllocatedRecordsUserByRecordTypeAndPhoneTypeMother(
-							pageable, callAllocationDto.getUserId(), "open", callAllocationDto.getPhoneNoType(),
-							tempFDateStamp, tempTDateStamp);
+					if(null!= callAllocationDto.getIsStickyAgent() && callAllocationDto.getIsStickyAgent()) {
+						outboundCallsPage = outboundCallsRepo.getAllocatedRecordsUserByRecordTypeAndPhoneTypeMotherByIsStickyAgent(
+								pageable, callAllocationDto.getUserId(), "open", callAllocationDto.getPhoneNoType(),
+								tempFDateStamp, tempTDateStamp, callAllocationDto.getIsStickyAgent());
+					}else {
+						outboundCallsPage = outboundCallsRepo.getAllocatedRecordsUserByRecordTypeAndPhoneTypeMother(
+								pageable, callAllocationDto.getUserId(), "open", callAllocationDto.getPhoneNoType(),
+								tempFDateStamp, tempTDateStamp);
+					}
+					
 				} else if (callAllocationDto.getRecordType().equalsIgnoreCase("Child")) {
-					outboundCallsPage = outboundCallsRepo.getAllocatedRecordsUserByRecordTypeAndPhoneTypeChild(pageable,
-							callAllocationDto.getUserId(), "open", callAllocationDto.getPhoneNoType(), tempFDateStamp,
-							tempTDateStamp);
+					if(null!= callAllocationDto.getIsStickyAgent() && callAllocationDto.getIsStickyAgent()) {
+						outboundCallsPage = outboundCallsRepo.getAllocatedRecordsUserByRecordTypeAndPhoneTypeChildByIsStickyAgent(pageable,
+								callAllocationDto.getUserId(), "open", callAllocationDto.getPhoneNoType(), tempFDateStamp,
+								tempTDateStamp, callAllocationDto.getIsStickyAgent());
+					}else {
+						outboundCallsPage = outboundCallsRepo.getAllocatedRecordsUserByRecordTypeAndPhoneTypeChild(pageable,
+								callAllocationDto.getUserId(), "open", callAllocationDto.getPhoneNoType(), tempFDateStamp,
+								tempTDateStamp);
+					}
+					
 				}
 
 				if (outboundCallsPage != null && outboundCallsPage.getSize() > 0) {

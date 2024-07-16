@@ -58,5 +58,7 @@ public class RequestCallAllocationDTO {
 	private String createdBy;
 
 	private Boolean isIntroductory;
+	
+	private Boolean isStickyAgent;
 
 }
