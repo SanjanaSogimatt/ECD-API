@@ -145,6 +145,14 @@ public interface OutboundCallsRepo extends CrudRepository<OutboundCalls, Long> {
 	int getAllocatedRecordsCountMotherUser(@Param("allocatedUserId") Integer allocatedUserId,
 			@Param("fDate") Timestamp fDate, @Param("tDate") Timestamp tDate, @Param("callStatus") String callStatus,
 			@Param("phoneNoType") String phoneNoType);
+	
+	
+	@Query(value = " SELECT COUNT(1) FROM OutboundCalls AS t WHERE t.allocatedUserId=:allocatedUserId AND "
+			+ " ((:fDate between t.callDateFrom AND t.callDateTo) OR (:tDate between t.callDateFrom AND t.callDateTo)) AND  t.callStatus=:callStatus "
+			+ " AND t.phoneNumberType=:phoneNoType AND t.childId IS NULL AND t.motherId IS NOT NULL AND t.isStickyAgent=:isStickyAgent")
+	int getAllocatedRecordsCountMotherUserByStickyAgent(@Param("allocatedUserId") Integer allocatedUserId,
+			@Param("fDate") Timestamp fDate, @Param("tDate") Timestamp tDate, @Param("callStatus") String callStatus,
+			@Param("phoneNoType") String phoneNoType, @Param("isStickyAgent") Boolean isStickyAgent);
 
 	// get users allocated calls count mother , not completed
 //	@Query(value = " SELECT COUNT(1) FROM OutboundCalls AS t WHERE t.allocatedUserId=:allocatedUserId AND "
@@ -159,6 +167,13 @@ public interface OutboundCallsRepo extends CrudRepository<OutboundCalls, Long> {
 	int getAllocatedRecordsCountChildUser(@Param("allocatedUserId") Integer allocatedUserId,
 			@Param("fDate") Timestamp fDate, @Param("tDate") Timestamp tDate, @Param("callStatus") String callStatus,
 			@Param("phoneNoType") String phoneNoType);
+	
+	@Query(value = " SELECT COUNT(1) FROM OutboundCalls AS t WHERE t.allocatedUserId=:allocatedUserId AND "
+			+ " ((:fDate between t.callDateFrom AND t.callDateTo) OR (:tDate between t.callDateFrom AND t.callDateTo)) AND  t.callStatus=:callStatus "
+			+ " AND t.phoneNumberType=:phoneNoType AND t.childId IS NOT NULL AND t.isStickyAgent=:isStickyAgent")
+	int getAllocatedRecordsCountChildUserByIsStickyAgent(@Param("allocatedUserId") Integer allocatedUserId,
+			@Param("fDate") Timestamp fDate, @Param("tDate") Timestamp tDate, @Param("callStatus") String callStatus,
+			@Param("phoneNoType") String phoneNoType, @Param("isStickyAgent") Boolean isStickyAgent);
 
 	// users allocated calls, Mother, by RecordType And PhoneType
 //	@Query(value = " SELECT t FROM OutboundCalls AS t WHERE t.allocatedUserId=:allocatedUserId AND "
@@ -174,7 +189,17 @@ public interface OutboundCallsRepo extends CrudRepository<OutboundCalls, Long> {
 	Page<OutboundCalls> getAllocatedRecordsUserByRecordTypeAndPhoneTypeMother(Pageable pageable,
 			@Param("allocatedUserId") Integer allocatedUserId, @Param("callStatus") String callStatus,
 			@Param("phoneNoType") String phoneNoType, @Param("fDate") Timestamp fDate, @Param("tDate") Timestamp tDate);
-
+	
+	
+	@Query(value = " SELECT t FROM OutboundCalls AS t WHERE t.allocatedUserId=:allocatedUserId AND "
+			+ " t.callStatus=:callStatus AND t.phoneNumberType=:phoneNoType "
+			+ " AND ((:fDate between t.callDateFrom AND t.callDateTo) OR (:tDate between t.callDateFrom AND t.callDateTo)) AND "
+			+ " t.childId IS NULL AND t.motherId IS NOT NULL AND t.isStickyAgent=:isStickyAgent")
+	Page<OutboundCalls> getAllocatedRecordsUserByRecordTypeAndPhoneTypeMotherByIsStickyAgent(Pageable pageable,
+			@Param("allocatedUserId") Integer allocatedUserId, @Param("callStatus") String callStatus,
+			@Param("phoneNoType") String phoneNoType, @Param("fDate") Timestamp fDate, @Param("tDate") Timestamp tDate, @Param("isStickyAgent") Boolean isStickyAgent);
+	
+	
 //	// users allocated calls, Child, by RecordType And PhoneType
 //	@Query(value = " SELECT t FROM OutboundCalls AS t WHERE t.allocatedUserId=:allocatedUserId AND "
 //			+ " t.callStatus=:callStatus AND t.phoneNumberType=:phoneNoType "
@@ -188,7 +213,16 @@ public interface OutboundCallsRepo extends CrudRepository<OutboundCalls, Long> {
 	Page<OutboundCalls> getAllocatedRecordsUserByRecordTypeAndPhoneTypeChild(Pageable pageable,
 			@Param("allocatedUserId") Integer allocatedUserId, @Param("callStatus") String callStatus,
 			@Param("phoneNoType") String phoneNoType, @Param("fDate") Timestamp fDate, @Param("tDate") Timestamp tDate);
+	
+	@Query(value = " SELECT t FROM OutboundCalls AS t WHERE t.allocatedUserId=:allocatedUserId AND "
+			+ " t.callStatus=:callStatus AND t.phoneNumberType=:phoneNoType "
+			+ " AND ((:fDate between t.callDateFrom AND t.callDateTo) OR (:tDate between t.callDateFrom AND t.callDateTo)) AND t.childId IS NOT NULL AND t.isStickyAgent=:isStickyAgent ")
+	Page<OutboundCalls> getAllocatedRecordsUserByRecordTypeAndPhoneTypeChildByIsStickyAgent(Pageable pageable,
+			@Param("allocatedUserId") Integer allocatedUserId, @Param("callStatus") String callStatus,
+			@Param("phoneNoType") String phoneNoType, @Param("fDate") Timestamp fDate, @Param("tDate") Timestamp tDate, @Param("isStickyAgent") Boolean isStickyAgent);
 
+	
+	
 	@Modifying
 	@Transactional
 	@Query(" UPDATE OutboundCalls obc SET beneficiaryRegId = :beneficiaryRegId, phoneNumberType = :phoneNumberType WHERE motherId = :motherId AND childId IS NULL ")
@@ -215,17 +249,17 @@ public interface OutboundCallsRepo extends CrudRepository<OutboundCalls, Long> {
 
 	@Transactional
 	@Modifying
-	@Query("UPDATE OutboundCalls SET allocationStatus = 'allocated', allocatedUserId = :userId "
+	@Query("UPDATE OutboundCalls SET allocationStatus = 'allocated', isStickyAgent = :isStickyAgent, allocatedUserId = :userId "
 			+ " WHERE motherId = :motherId AND callDateTo>current_date() AND obCallId!=:id")
 	public int stickyMotherAgentAllocation(@Param("id") Long id, @Param("motherId") Long motherId,
-			@Param("userId") Integer userId);
+			@Param("userId") Integer userId, @Param("isStickyAgent") Boolean isStickyAgent);
 
 	@Transactional
 	@Modifying
-	@Query("UPDATE OutboundCalls SET allocationStatus = 'allocated', allocatedUserId = :userId "
+	@Query("UPDATE OutboundCalls SET allocationStatus = 'allocated', isStickyAgent = :isStickyAgent, allocatedUserId = :userId "
 			+ " WHERE childId = :childId AND callDateTo>current_date() AND obCallId!=:id")
 	public int stickyChildAgentAllocation(@Param("id") Long id, @Param("childId") Long childId,
-			@Param("userId") Integer userId);
+			@Param("userId") Integer userId, @Param("isStickyAgent") Boolean isStickyAgent);
 	
 	
 
