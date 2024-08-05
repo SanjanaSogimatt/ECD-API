@@ -595,7 +595,6 @@ public class CallAllocationImpl {
 								callAllocationDto.getUserId(), "open", callAllocationDto.getPhoneNoType(), tempFDateStamp,
 								tempTDateStamp);
 					}
-					
 				}
 
 				List<Long> motherIds = new ArrayList<>();
@@ -607,6 +606,7 @@ public class CallAllocationImpl {
 
 						outboundCalls.setAllocatedUserId(null);
 						outboundCalls.setAllocationStatus("unallocated");
+						outboundCalls.setIsStickyAgent(false);
 
 						if (outboundCalls.getEcdCallType() != null
 								&& outboundCalls.getEcdCallType().equalsIgnoreCase("introductory")) {
