@@ -1,7 +1,7 @@
 # AMRIT - Early Childhood Developemnt (ECD) Service
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-![Build Status](https://github.com/PSMRI/ECD-API/actions/workflows/sast-and-package.yml/badge.svg)
+![Build Status](https://github.com/PSMRI/ECD-API/actions/workflows/sast.yml/badge.svg)
 
 The Early Childhood Development (ECD) Initiative by the Ministry of Health and Family Welfare (MoHFW) aims to nurture the cognitive capital of the country by enabling young children to attain their fullest potential. The initiative focuses on the critical period of brain development, which includes the 270 days of pregnancy and the first two years of the child's life, also known as the first 1,000 days.
 
@@ -27,28 +27,11 @@ The Early Childhood Development (ECD) Initiative by the Ministry of Health and F
 
 - **Continuously evaluate and improve:** Regularly assess the effectiveness of the ECD initiative and the ECD Call Centre. Seek feedback from parents and caregivers to identify areas for improvement and refine the messages and services provided.
 
-## Building From Source
+## Environment and Setup
+For setting up the development environment, please refer to the [Developer Guide](https://piramal-swasthya.gitbook.io/amrit/developer-guide/development-environment-setup) .
 
-This microservice is built using Java and the Spring Boot framework, with MySQL as the underlying database. Before building the ECD module, ensure you have the following prerequisites:
-
-- JDK 17
-- Maven
-- Redis
-- Spring Boot V2
-- MySQL
-
-To build the ECD module from source, follow these steps:
-
-1. Clone the repository to your local machine.
-2. Install the required dependencies and build the module using the following command:
-- Execute the following command:
-  ```
-  mvn clean install
-  ```
-3. You can copy `ecd_example.properties` to `ecd_local.properties` and edit the file accordingly. The file is under `src/main/environment` folder.
-4. Run the spring server with local configuration `mvn spring-boot:run -DENV_VAR=local` 
-
-- Open your browser and navigate to http://localhost:8080/swagger-ui.html#!/
+## API Guide
+Detailed information on API endpoints can be found in the [API Guide](https://piramal-swasthya.gitbook.io/amrit/architecture/api-guide).
 
 ## Usage
 
